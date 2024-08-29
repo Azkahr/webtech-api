@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\API\AuthController;
-use App\Http\Controllers\API\BannerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\BannerController;
+use App\Http\Controllers\API\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,14 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
         Route::post('/', [BannerController::class, 'store']);
         Route::put('/{banner}', [BannerController::class, 'update']);
         Route::delete('/{banner}', [BannerController::class, 'destroy']);
+    });
 
+    Route::group(['prefix' => 'category'], function() {
+        Route::get('/{category}', [CategoryController::class, 'show']);
+        Route::get('/', [CategoryController::class, 'index']);
+
+        Route::post('/', [CategoryController::class, 'store']);
+        Route::put('/{category}', [CategoryController::class, 'update']);
+        Route::delete('/{category}', [CategoryController::class, 'destroy']);
     });
 });
