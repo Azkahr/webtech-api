@@ -29,6 +29,12 @@ Route::group(['prefix' => 'auth'], function() {
 
 Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::group(['prefix' => 'banner'], function() {
+        Route::get('/{banner}', [BannerController::class, 'show']);
+        Route::get('/', [BannerController::class, 'index']);
+
         Route::post('/', [BannerController::class, 'store']);
+        Route::put('/{banner}', [BannerController::class, 'update']);
+        Route::delete('/{banner}', [BannerController::class, 'destroy']);
+
     });
 });
