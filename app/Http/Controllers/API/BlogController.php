@@ -21,14 +21,14 @@ class BlogController extends Controller
     public function index() {
         return response()->json([
             'message' => 'All blog', 
-            'data' => Blog::with('comments.user')->get()
+            'data' => Blog::with(['comments.user', 'author'])->get()
         ]);
     }
     
     public function show(Blog $blog) {
         return response()->json([
             'message' => 'Blog detail', 
-            'data' => $blog->with('comments.user')->first()
+            'data' => $blog->with(['comments.user', 'author'])->first()
         ]);
     }
     

@@ -18,6 +18,7 @@ class PortfolioController extends Controller
     }
     
     public function index() {
+        \Log::info('hit');
         return response()->json([
             'message' => 'All banner', 
             'data' => Portfolio::all()
