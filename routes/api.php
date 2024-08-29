@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\BlogController;
 use App\Http\Controllers\API\BannerController;
 use App\Http\Controllers\API\CategoryController;
 
@@ -45,5 +46,14 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
         Route::post('/', [CategoryController::class, 'store']);
         Route::put('/{category}', [CategoryController::class, 'update']);
         Route::delete('/{category}', [CategoryController::class, 'destroy']);
+    });
+
+    Route::group(['prefix' => 'blog'], function() {
+        Route::get('/{blog}', [BlogController::class, 'show']);
+        Route::get('/', [BlogController::class, 'index']);
+
+        Route::post('/', [BlogController::class, 'store']);
+        Route::put('/{blog}', [BlogController::class, 'update']);
+        Route::delete('/{blog}', [BlogController::class, 'destroy']);
     });
 });
