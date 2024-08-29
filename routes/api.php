@@ -7,6 +7,7 @@ use App\Http\Controllers\API\BlogController;
 use App\Http\Controllers\API\BannerController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\PortfolioController;
+use App\Http\Controllers\API\BlogCommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,6 +62,15 @@ Route::group(['prefix' => 'blog'], function() {
         Route::put('/{blog}', [BlogController::class, 'update']);
         Route::delete('/{blog}', [BlogController::class, 'destroy']);
     });
+});
+
+Route::group(['prefix' => 'blog-comment', 'middleware' => 'auth:sanctum'], function() {
+    Route::get('/{blogComment}', [BlogCommentController::class, 'show']);
+    Route::get('/', [BlogCommentController::class, 'index']);
+    
+    Route::post('/', [BlogCommentController::class, 'store']);
+    Route::put('/{blogComment}', [BlogCommentController::class, 'update']);
+    Route::delete('/{blogComment}', [BlogCommentController::class, 'destroy']);
 });
 
 Route::group(['prefix' => 'portfolio'], function() {

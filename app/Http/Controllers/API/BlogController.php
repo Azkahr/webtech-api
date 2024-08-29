@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Models\Blog;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\BlogComment;
 use App\Repository\UploadRepository;
 use Illuminate\Support\Facades\Validator;
 
@@ -20,14 +21,14 @@ class BlogController extends Controller
     public function index() {
         return response()->json([
             'message' => 'All blog', 
-            'data' => Blog::all()
+            'data' => Blog::with('comments.user')->get()
         ]);
     }
     
     public function show(Blog $blog) {
         return response()->json([
             'message' => 'Blog detail', 
-            'data' => $blog
+            'data' => $blog->with('comments.user')->first()
         ]);
     }
     
@@ -108,6 +109,8 @@ class BlogController extends Controller
 
     public function destroy(Blog $blog) {
         $this->upload->delete($blog->image);
+        
+        BlogComment::where('blog_id', $blog->id)->delete();
         
         $blog->delete();
 
