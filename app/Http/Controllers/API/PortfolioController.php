@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\Blog;
+use App\Models\Portfolio;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repository\UploadRepository;
 use Illuminate\Support\Facades\Validator;
 
-class BlogController extends Controller
+class PortfolioController extends Controller
 {
     protected $upload;
 
@@ -19,15 +19,15 @@ class BlogController extends Controller
     
     public function index() {
         return response()->json([
-            'message' => 'All blog', 
-            'data' => Blog::all()
+            'message' => 'All banner', 
+            'data' => Portfolio::all()
         ]);
     }
     
-    public function show(Blog $blog) {
+    public function show(Portfolio $portfolio) {
         return response()->json([
-            'message' => 'Blog detail', 
-            'data' => $blog
+            'message' => 'Portfolio detail', 
+            'data' => $portfolio
         ]);
     }
     
@@ -35,7 +35,6 @@ class BlogController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'title' => 'required',
-                'description' => 'required',
                 'category_id' => 'required',
                 'image' => 'required|max:1024|mimes:png,jpg,jpeg',
             ]);
@@ -52,11 +51,11 @@ class BlogController extends Controller
             $data['image'] = $this->upload->save($request->file('image'));
             $data['author'] = auth()->user()->id;
     
-            $blog = Blog::create($data);
+            $portfolio = Portfolio::create($data);
     
             return response()->json([
-                'message' => 'Blog created',
-                'data' => $blog
+                'message' => 'Portfolio created',
+                'data' => $portfolio
             ]);
         } catch (Exception $e) {
             return response()->json([
@@ -66,11 +65,10 @@ class BlogController extends Controller
         }
     }
 
-    public function update(Request $request, Blog $blog) {
+    public function update(Request $request, Portfolio $portfolio) {
         try {
             $validator = Validator::make($request->all(), [
                 'title' => 'required',
-                'description' => 'required',
                 'category_id' => 'required',
                 'image' => 'required|max:1024|mimes:png,jpg,jpeg',
             ]);
@@ -85,18 +83,18 @@ class BlogController extends Controller
             $data = $request->all();
             unset($data['_method']);
 
-            $data['image'] = $blog->image;
+            $data['image'] = $portfolio->image;
             $data['author'] = auth()->user()->id;
 
             if($request->file('image')) {
-                $data['image'] = $this->upload->update($blog->image, $request->file('image'));
+                $data['image'] = $this->upload->update($portfolio->image, $request->file('image'));
             }
     
-            $blog->update($data);
+            $portfolio->update($data);
     
             return response()->json([
-                'message' => 'Blog updated',
-                'data' => $blog->fresh()
+                'message' => 'Portfolio updated',
+                'data' => $portfolio->fresh()
             ]);
         } catch (Exception $e) {
             return response()->json([
@@ -106,13 +104,13 @@ class BlogController extends Controller
         }
     }
 
-    public function destroy(Blog $blog) {
-        $this->upload->delete($blog->image);
+    public function destroy(Portfolio $portfolio) {
+        $this->upload->delete($portfolio->image);
         
-        $blog->delete();
+        $portfolio->delete();
 
         return response()->json([
-            'message' => 'Blog deleted',
+            'message' => 'Portfolio deleted',
         ]);
     }
 }
