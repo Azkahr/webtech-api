@@ -25,10 +25,12 @@ class BlogController extends Controller
         ]);
     }
     
-    public function show(Blog $blog) {
+    public function show($id) {
+        $blog = Blog::where('id', $id)->with(['comments.user', 'author'])->firstOrFail();
+        
         return response()->json([
             'message' => 'Blog detail', 
-            'data' => $blog->with(['comments.user', 'author'])->first()
+            'data' => $blog
         ]);
     }
     

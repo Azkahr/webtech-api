@@ -54,7 +54,7 @@ Route::group(['prefix' => 'category'], function() {
 });
 
 Route::group(['prefix' => 'blog'], function() {
-    Route::get('/{blog}', [BlogController::class, 'show']);
+    Route::get('/{id}', [BlogController::class, 'show']);
     Route::get('/', [BlogController::class, 'index']);
 
     Route::group(['middleware' => ['auth:sanctum', 'isAdmin']], function() {

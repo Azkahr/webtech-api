@@ -22,7 +22,7 @@ class BannerController extends Controller
     public function index() {
         return response()->json([
             'message' => 'All banner', 
-            'data' => Banner::all()
+            'data' => Banner::latest()->get()
         ]);
     }
     
